@@ -11,13 +11,15 @@ let image = document.querySelector('.weather_image');
 let temperature = document.querySelector('.weather_temperature>.value');
 let forecastBlock = document.querySelector('.weather_forecast');
 let suggestions = document.querySelector('#suggestions');
+// decide whether to use metric or imperial as units of measurement  
+let units = document.querySelector('#units');
 
 // private API key
-let weatherAPIKey = ''; // use your own private API key 
+let privateAPIKey = ''; // use your own private API key 
 
 // API calls (create endpoints)
-let weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?units=metric&appid=' + weatherAPIKey;
-let forecastBaseEndpoint = 'https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=' + weatherAPIKey;
+let weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?units=metric&appid=' + privateAPIKey;
+let forecastBaseEndpoint = 'https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=' + privateAPIKey;
 let cityBaseEndpoint = 'https://api.teleport.org/api/cities/?search='; // Teleport public API @ developers.teleport.org/api
 
 // create an array that holds objects, where each object contains two keys (a url and one or more ID's)
@@ -61,21 +63,37 @@ let weatherImages = [
 ]
 
 // create a function that returns the weather by a city name
-let getWeatherByCityName = async (cityString) => { 
+let getWeatherByCityName = async (cityName) => { 
+    // create an endpoint
+    let endpoint = '';
     // create a variable for the city
     let city;
+    // if the input is a zip code (check that the search itself matches a zip code)
+    if (cityName.length === 5 && Number.parseInt(cityName) + '' === cityName) {
+        // store the zip code
+        city = cityName;
+        // use custom endpoint which is slightly different when using a zip code
+        endpoint =  'https://api.openweathermap.org/data/2.5/weather?units=imperial&'  
+        + 'zip=' + city + ',us&appid=' + privateAPIKey;
+        // use imperial units of measurement
+        units.textContent = 'F'; // display Fahrenheit  
+    }
     // if the string entered includes a comma
-    if(cityString.includes(',')) {
+    else if (cityName.includes(',')) {
         // retrieve the substring before the comma and then retrieve the substring after the last comma and then combine the two (i.e. New York, New York)
-        city = cityString.substring(0, cityString.indexOf(',')) + cityString.substring(cityString.lastIndexOf(',')); // modify the string to exclude the comma and then store it
+        city = cityName.substring(0, cityName.indexOf(',')) + cityName.substring(cityString.lastIndexOf(',')); // modify the string to exclude the comma and then store it
+        endpoint = weatherBaseEndpoint + '&q=' + city;
+        // use metric units of measurement
+        units.textContent = 'C'; // Celcius
     } 
     // if no comma in the string
     else {
         // only need to store the string
-        city = cityString;
+        city = cityName;
+        endpoint = weatherBaseEndpoint + '&q=' + city;
+        // use metric units of measurement
+        units.textContent = 'C'; // Celcius
     }
-    // create an endpoint
-    let endpoint = weatherBaseEndpoint + '&q=' + city;
     // make a request to this endpoint
     let response = await fetch(endpoint); // fetch is asynchronous and returns a promise
     // if the code isn't 200 (such as a 404) it means it wasn't successful in finding the city entered
@@ -142,7 +160,7 @@ init(); // call function to initialize the app with a pre-selected city
 // add an event listener for when the (enter) key is pressed which triggers an action to performed
 search.addEventListener('keydown', async (e) => { // e is the special object that stores all information about the event
     // if enter key is pressed 
-    if(e.keyCode === 13) { // why 13? -> the key code for the enter key (from the keyboard event) is 13
+    if(e.keyCode === 13) { // 13 is the key code for the enter key (keyboard event)
        weatherForCity(search.value); // make a call to the function that returns weather data by city search
     }
 })
@@ -226,7 +244,7 @@ let updateForecast = (forecast) => {
             <article class="weather_forecast_item">
                 <img src="${iconUrl}" alt="${day.weather[0].description}" class="weather_forecast_icon"> 
                 <h3 class="weather_forecast_day">${dayName}</h3>
-                <p class="weather_forecast_temperature"><span class="value">${temperature}</span> &deg;C</p>
+                <p class="weather_forecast_temperature"><span class="value">${temperature}</span>&deg; C</p>
             </article>
         `;
         // convert the html into a DOM object and then insert the article inside the forecast block
@@ -239,4 +257,3 @@ let dayOfWeek = (dt = new Date().getTime()) => { // dt = day/time
     // convert object to the local date string 
     return new Date(dt).toLocaleDateString('en-EN', {'weekday': 'long'}); // en-EN -> English and long -> the whole name of the weekday
 }
-
