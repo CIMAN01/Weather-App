@@ -242,9 +242,9 @@ let updateForecast = (forecast) => {
         // create an article (can use any article from the html but it must be enclosed in backticks or ` ` and also use ${} to insert js code where apprioriate)
         let forecastItem = ` 
             <article class="weather_forecast_item">
-                <img src="${iconUrl}" alt="${day.weather[0].description}" class="weather_forecast_icon"> 
                 <h3 class="weather_forecast_day">${dayName}</h3>
-                <p class="weather_forecast_temperature"><span class="value">${temperature}</span>&deg; C</p>
+                <img src="${iconUrl}" alt="${day.weather[0].description}" class="weather_forecast_icon"> 
+                <h3 class="weather_forecast_temperature"><span class="value">${temperature}</span>&deg; C</h3>
             </article>
         `;
         // convert the html into a DOM object and then insert the article inside the forecast block
@@ -257,3 +257,4 @@ let dayOfWeek = (dt = new Date().getTime()) => { // dt = day/time
     // convert object to the local date string 
     return new Date(dt).toLocaleDateString('en-EN', {'weekday': 'long'}); // en-EN -> English and long -> the whole name of the weekday
 }
+
