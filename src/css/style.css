@@ -1,4 +1,3 @@
-
 @font-face {
     font-family: 'Open Sans';
     src: url(../fonts/OpenSans.woff2) format('woff2'), url(../fonts/OpenSans.woff) format('woff');
@@ -47,11 +46,14 @@ body {
 .weather_search {
     width: 100%;
     padding: 15px 10px;
+    margin-top: 30px;
+    margin-bottom: 50px;
     border: none; /* get rid of the deault border (every input has a default border) */
     background-color: rgba(255, 255, 255, 0.15); /* white color with some transparancy */
     font-size: 20px;
     color: inherit; /* by default the input doesn't inherit the color of the parent element */
-    margin-bottom: 20px;
+    box-shadow:5px 5px 50px white;
+    border-radius: 10px;
 }
 
 .weather_search::placeholder { /* use psuedo element placeholder to get white text for 'Your City' search text */
@@ -61,13 +63,15 @@ body {
 .weather_today { /* provide space distribution between items on one line (one "box" for each of the 3 items) */
     display: flex; 
     flex-wrap: wrap; /* this is needed to fix the temperature from being cut off by making it responsive */
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-bottom: 20px;
 }
 
 .weather_image {
     width: 30vmin; /* v-min is relative unit of measurement */
     align-self: center; /* fix the shape of the image of the sun */
+    margin-left: 25px;
+    margin-top: 30px;
 }
 
 .weather_city {
@@ -106,6 +110,7 @@ body {
 
 .weather_temperature {
     font-size: 10vw; /* increase the font size for the main temp reading */
+    margin-top: 30px;
 }
 
 .weather_forecast {
@@ -113,7 +118,9 @@ body {
     text-align: center;
     display: flex; /* use flex to display the five day forecast in one line */
     flex-wrap: wrap; /* use flex-wrap to make the page more responsive (i.e when decreasing the size of the web-page or when using mobile) */
-    justify-content: space-between;
+    justify-content: space-evenly;
+    margin-top: 60px;
+    margin-bottom: 30px;
 }
 
 .weather_forecast_icon {
@@ -122,11 +129,18 @@ body {
 
 .weather_forecast_item {
     background-color: rgba(255, 255, 255, 0.2); /* background is white with some transparency */
-    border-radius: 10px;
     margin: 0 10px 10px; /* add some margin between the articles (10px left/right and 10px at the bottom)  */
     padding: 30px 5px 20px; /* 30px padding at the top, 5px padding on the left/right, and 20px padding at the bottom */
     box-sizing: border-box; /* don't want the padding to be added to the size of the element */
     min-width: 150px; /* specify the width of each article */
     width: calc(20% - 20px); /* adjust for previous padding (10px+10px) by subtracting 20px from 20% (100% / 5 articles) */
     flex-grow: 1; /* this is needed to make last element take up the whole empty space of the div */
+    box-shadow: 2px 5px 10px white;
+    border-radius: 10px;
+}
+
+.weather_details {
+    box-shadow: 5px 5px 10px white;
+    border-radius: 10px;
+    padding: 20px
 }
