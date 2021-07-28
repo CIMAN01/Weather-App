@@ -76,15 +76,15 @@ let getWeatherByCityName = async (cityName) => {
         endpoint =  'https://api.openweathermap.org/data/2.5/weather?units=imperial&'  
         + 'zip=' + city + ',us&appid=' + privateAPIKey;
         // use imperial units of measurement
-        units.textContent = 'F'; // display Fahrenheit  
+        units.textContent = 'F'; // display Fahrenheit (replaces 'C' in html)
     }
     // if the string entered includes a comma
     else if (cityName.includes(',')) {
-        // retrieve the substring before the comma and then retrieve the substring after the last comma and then combine the two (i.e. New York, New York)
-        city = cityName.substring(0, cityName.indexOf(',')) + cityName.substring(cityString.lastIndexOf(',')); // modify the string to exclude the comma and then store it
+        // retrieve the substring (city) before the comma (i.e. New York, New York -> New York)
+        city = cityName.substring(0, cityName.indexOf(',')); 
         endpoint = weatherBaseEndpoint + '&q=' + city;
         // use metric units of measurement
-        units.textContent = 'C'; // Celcius
+        units.textContent = 'C'; // display Celcius
     } 
     // if no comma in the string
     else {
@@ -92,7 +92,7 @@ let getWeatherByCityName = async (cityName) => {
         city = cityName;
         endpoint = weatherBaseEndpoint + '&q=' + city;
         // use metric units of measurement
-        units.textContent = 'C'; // Celcius
+        units.textContent = 'C'; // display Celcius
     }
     // make a request to this endpoint
     let response = await fetch(endpoint); // fetch is asynchronous and returns a promise
@@ -257,4 +257,3 @@ let dayOfWeek = (dt = new Date().getTime()) => { // dt = day/time
     // convert object to the local date string 
     return new Date(dt).toLocaleDateString('en-EN', {'weekday': 'long'}); // en-EN -> English and long -> the whole name of the weekday
 }
-
