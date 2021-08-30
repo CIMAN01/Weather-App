@@ -1,4 +1,4 @@
-// Javascript Logic
+// Weather-App
 
 // create variables that will hold data from API and link them to html elements via the DOM  
 let search = document.querySelector('.weather_search');
@@ -15,12 +15,18 @@ let suggestions = document.querySelector('#suggestions');
 let units = document.querySelector('#units');
 
 // private API key
-let privateAPIKey = ''; // use your own private API key 
+let privateAPIKey = ''; // use your own private API key  
 
 // API calls (create endpoints)
 let weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?units=metric&appid=' + privateAPIKey;
-let forecastBaseEndpoint = 'https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=' + privateAPIKey;
+let weatherBaseEndpointImperial = 'https://api.openweathermap.org/data/2.5/weather?units=imperial&';
+let forecastBaseEndpoint = 'https://api.openweathermap.org/data/2.5/forecast?q=';
 let cityBaseEndpoint = 'https://api.teleport.org/api/cities/?search='; // Teleport public API @ developers.teleport.org/api
+
+// boolean flag
+let isImperial = false;
+// metric/imperial used
+let unit = 'C';
 
 // create an array that holds objects, where each object contains two keys (a url and one or more ID's)
 let weatherImages = [
@@ -67,32 +73,38 @@ let getWeatherByCityName = async (cityName) => {
     // create an endpoint
     let endpoint = '';
     // create a variable for the city
-    let city;
+    let city = '';
     // if the input is a zip code (check that the search itself matches a zip code)
     if (cityName.length === 5 && Number.parseInt(cityName) + '' === cityName) {
         // store the zip code
         city = cityName;
         // use custom endpoint which is slightly different when using a zip code
-        endpoint =  'https://api.openweathermap.org/data/2.5/weather?units=imperial&'  
-        + 'zip=' + city + ',us&appid=' + privateAPIKey;
+        endpoint =  weatherBaseEndpointImperial + 'zip=' + city + ',us&appid=' + privateAPIKey;
         // use imperial units of measurement
         units.textContent = 'F'; // display Fahrenheit (replaces 'C' in html)
+        // change boolean flag
+        isImperial = true;
+        // change to imperial unit (used for forecast)
+        unit = 'F';
     }
-    // if the string entered includes a comma
-    else if (cityName.includes(',')) {
-        // retrieve the substring (city) before the comma (i.e. New York, New York -> New York)
-        city = cityName.substring(0, cityName.indexOf(',')); 
-        endpoint = weatherBaseEndpoint + '&q=' + city;
-        // use metric units of measurement
-        units.textContent = 'C'; // display Celcius
-    } 
-    // if no comma in the string
+    // when no zip is entered
     else {
+        // if the string entered includes a comma
+        if (cityName.includes(',')) {
+            // retrieve the substring (city) before the comma (i.e. New York, New York -> New York)
+            city = cityName.substring(0, cityName.indexOf(',')); 
+            endpoint = weatherBaseEndpoint + '&q=' + city;
+        }
+         // if no comma in the string
+        else {
         // only need to store the string
         city = cityName;
         endpoint = weatherBaseEndpoint + '&q=' + city;
-        // use metric units of measurement
+        }
+        // use metric units of measurement (used for current weather)
         units.textContent = 'C'; // display Celcius
+        // change unit to metric (used for forecast)
+        unit = 'C';
     }
     // make a request to this endpoint
     let response = await fetch(endpoint); // fetch is asynchronous and returns a promise
@@ -108,9 +120,19 @@ let getWeatherByCityName = async (cityName) => {
 }
 
 // a function that returns the daily forecast by city ID
-let getForecastByCityID = async (id) => {
-    // create an endpoint
-    let endpoint = forecastBaseEndpoint + '&id=' + id;
+let getForecastByCityName = async (cityName) => {
+    // create an empy endpoint
+    let endpoint;
+    // if a zip is entered 
+    if (isImperial) {
+        // the endpoint should be an imperial api call
+        endpoint = forecastBaseEndpoint + cityName + '&units=imperial&appid=' + privateAPIKey;
+    }
+    // if no zip is entered
+    else {
+        // the endpoint should be a metric api call
+        endpoint = forecastBaseEndpoint + cityName + '&units=metric&appid=' + privateAPIKey;
+    }
     // make a call to the fetch function and wait for the results to come back before storing them
     let result = await fetch(endpoint); // make a request
     let forecast = await result.json(); // convert the results to a json object
@@ -120,10 +142,10 @@ let getForecastByCityID = async (id) => {
     // check every element in the array (40 items)
     forecastList.forEach(day => {
         // grab the date and time
-        let date = new Date(day.dt_txt.replace(' ', 'T')); // replace the empty space with the letter T 
+        let date = new Date(day.dt_txt.replace(' ', 'T')); // replace the empty space with the letter T to get the proper formatting for the date syntax
         let hours = date.getHours(); // get the time from the date 
         // if the time is 12:00, then the object has to be added to the daily array 
-        if(hours === 12) {
+        if(hours === 12) { // needed in order to get only the 5 object and not 40!
             daily.push(day); // add day to the array
         }
     })
@@ -138,12 +160,12 @@ let weatherForCity = async (city) => { // used by init()
     if(!weather) {
         return; // otherwise stop the function (exit)    
     }
-    // retreive the city ID
-    let cityID = weather.id;
     // update the weather to current conditions
     updateCurrentWeather(weather);
-    // get the forecast
-    let forecast = await getForecastByCityID(cityID);
+    // retreive the city ID
+    //let cityID = weather.id; 
+     // get the forecast
+    let forecast = await getForecastByCityName(city);
     // update the forecast
     updateForecast(forecast);
 }
@@ -212,8 +234,8 @@ let updateCurrentWeather = (data) => {
         windDirection = 'North';
     }
     wind.textContent = windDirection + ', ' + data.wind.speed; // wind direction and speed for the wind indicator
-    // store the temperature and a plus sign in front if it's a positive number (use Math.round to get an integer value)
-    temperature.textContent = data.main.temp > 0 ? '+' + Math.round(data.main.temp) : Math.round(data.main.temp);  
+    // store the temperature and a minus sign in front if it's a negative number (use Math.round to get an integer value)
+    temperature.textContent = data.main.temp > 0 ? Math.round(data.main.temp) : '-' + Math.round(data.main.temp);  
     // get the image ID from the API data
     let imgID = data.weather[0].id;
     // check every object in the weatherImages array 
@@ -230,21 +252,23 @@ let updateCurrentWeather = (data) => {
 let updateForecast = (forecast) => {
     // delete everything already stored inside the forecast block
     forecastBlock.innerHTML = '';
+    // reset boolean flag
+    isImperial = false;
     // create an article for each day of the array called forecast 
-    forecast.forEach(day => {
+    forecast.forEach( (day) => {
         // grab some data via API:
         // add weather condition codes to the fixed part of the url to get the desired weather image 
         let iconUrl = 'http://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png'; // '@2x.png' -> increases the resolution of the pgn 
         // get the relevant day
         let dayName = dayOfWeek(day.dt * 1000); // convert seconds into milliseconds (1 sec = 1000 ms)
         // get the temperature of the relevant day 
-        let temperature = day.main.temp > 0 ? '+' + Math.round(day.main.temp) : Math.round(day.main.temp); 
+        let temperature = day.main.temp_max > 0 ? Math.round(day.main.temp_max) : '-' + Math.round(day.main.temp_max); 
         // create an article (can use any article from the html but it must be enclosed in backticks or ` ` and also use ${} to insert js code where apprioriate)
         let forecastItem = ` 
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">${dayName}</h3>
                 <img src="${iconUrl}" alt="${day.weather[0].description}" class="weather_forecast_icon"> 
-                <h3 class="weather_forecast_temperature"><span class="value">${temperature}</span>&deg; C</h3>
+                <h3 class="weather_forecast_temperature"><span class="value">${temperature}</span>&deg; ${unit}</h3>
             </article>
         `;
         // convert the html into a DOM object and then insert the article inside the forecast block
