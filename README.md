@@ -1,8 +1,11 @@
-
-
 # Weather-App
 
-A simple weather app in plain Javascript that uses a third-party weather API.
+A simple but gorgeous weather app (designed in HTML/CSS for the front-end and vanilla Javascript as the back-end logic) that  
+implements the open weather API (third-party API) to gather weather data via queries by the user and then displays the
+current weather and a 5-day forecast on a local server via the browser. If the user enters a zip code the weather/forecast 
+will be shown in Fahrenheit instead of Celsius. The app also includes a city search suggestions mechanism when a query is performed.
 
-![Screenshot-Weather-App-1](https://user-images.githubusercontent.com/34729011/127039424-61b27eb4-4631-4184-9ec6-8cbbfb2207a7.png)
-![Screenshot-Weather-App-2](https://user-images.githubusercontent.com/34729011/127039430-2838a1ad-e00b-40fd-a819-fd62b284ce04.png)
+![Screenshot-1](https://user-images.githubusercontent.com/34729011/132571664-57ee5336-8c2c-4dae-85f4-5dd7fd4864b7.png)
+![Screenshot-2](https://user-images.githubusercontent.com/34729011/132571673-4ba77a08-ac44-4980-8065-6bb2dea47e90.png)
+![Screenshot-3](https://user-images.githubusercontent.com/34729011/132571678-6becc516-bbe5-466f-a46d-34415e63e829.png)
+
