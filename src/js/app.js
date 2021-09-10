@@ -2,6 +2,7 @@
 
 // create variables that will hold data from API and link them to html elements via the DOM  
 let search = document.querySelector('.weather_search');
+let searchButton = document.querySelector('.search_button');
 let city = document.querySelector('.weather_city');
 let day = document.querySelector('.weather_day');
 let humidity = document.querySelector('.weather_indicator-humidity>.value');
@@ -179,12 +180,17 @@ let init = () => {
 // initialization
 init(); // call function to initialize the app with a pre-selected city 
 
-// add an event listener for when the (enter) key is pressed which triggers an action to performed
+// add an event listener for when the (enter) key is pressed which triggers an action to be performed
 search.addEventListener('keydown', async (e) => { // e is the special object that stores all information about the event
     // if enter key is pressed 
     if(e.keyCode === 13) { // 13 is the key code for the enter key (keyboard event)
        weatherForCity(search.value); // make a call to the function that returns weather data by city search
     }
+})
+
+// add an event listener for when search button is clicked which triggers an action to be performed
+searchButton.addEventListener('click', async (e) => { // e is the special object that stores all information about the event
+    weatherForCity(search.value); // make a call to the function that returns weather data by city search
 })
 
 // a function that performs an action based on the input (event) from the search box  
