@@ -10,10 +10,19 @@
 <body>
     <!-- main div -->
     <div class="weather">
-        <!-- create an input at the top -->
-        <input class="weather_search" type="search" placeholder="Your City" list="suggestions">
-        <!-- city suggestions -->
-        <datalist id="suggestions"></datalist>
+        <div class="search_area">
+            <!-- create an input at the top -->
+            <input class="weather_search" type="search" placeholder="Your City" list="suggestions">
+            <!-- search button icon -->
+            <button class="search_button">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z" clip-rule="evenodd"></path>
+                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" clip-rule="evenodd">
+                    </path>
+                </svg>
+            </button>
+            <!-- city suggestions -->
+            <datalist id="suggestions"></datalist>
+        </div>
         <!-- create two divs below the input -->
         <!-- this block is composed of three elements: one for storing weather details, a second one for displaying the weather image, and a third for storing/displaying the temp data -->
         <div class="weather_today">
@@ -28,7 +37,7 @@
                 </div>
             </div>
             <!-- middle div -->
-            <img src="images/clear-sky.png" alt="Clear sky" class="weather_image">
+            <img src="images/clear-sky.png" alt="Clear Sky" class="weather_image">
             <!-- right div -->
             <div class="weather_temperature"><span class="value">+25</span>&deg; <span id="units">C</span></div>
         </div>
@@ -37,30 +46,30 @@
             <!-- use an article tag for each day (5 articles to display) -->
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">Day</h4>
-                <img src="images/clear-sky.png" alt="Clear sky" class="weather_forecast_icon">
+                <img src="images/clear-sky.png" alt="Clear Sky" class="weather_forecast_icon">
                 <h3 class="weather_forecast_temperature"><span class="value">+25</span>&deg; C</h3>
             </article>
             <!-- use article tag for each day -->
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">Day</h4>
-                <img src="images/clear-sky.png" alt="Clear sky" class="weather_forecast_icon">
+                <img src="images/clear-sky.png" alt="Clear Sky" class="weather_forecast_icon">
                 <h3 class="weather_forecast_temperature"><span class="value">+25</span>&deg; C</h3>
             </article>
             <!-- use article tag for each day -->
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">Day</h4>
-                <img src="images/clear-sky.png" alt="Clear sky" class="weather_forecast_icon">
+                <img src="images/clear-sky.png" alt="Clear Sky" class="weather_forecast_icon">
                 <h3 class="weather_forecast_temperature"><span class="value">+25</span>&deg; C</h3>
             </article>
             <!-- use article tag for each day -->
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">Day</h4>
-                <img src="images/clear-sky.png" alt="Clear sky" class="weather_forecast_icon">
+                <img src="images/clear-sky.png" alt="Clear Sky" class="weather_forecast_icon">
                 <h3 class="weather_forecast_temperature"><span class="value">+25</span>&deg; C</h3>
             <!-- use article tag for each day -->
             <article class="weather_forecast_item">
                 <h3 class="weather_forecast_day">Day</h4>
-                <img src="images/clear-sky.png" alt="Clear sky" class="weather_forecast_icon">
+                <img src="images/clear-sky.png" alt="Clear Sky" class="weather_forecast_icon">
                 <h3 class="weather_forecast_temperature"><span class="value">+25</span>&deg; C</h3>
             </article>
         </div>
