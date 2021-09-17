@@ -1,4 +1,4 @@
-// Weather-App
+// Javascript Logic
 
 // create variables that will hold data from API and link them to html elements via the DOM  
 let search = document.querySelector('.weather_search');
@@ -6,7 +6,7 @@ let searchButton = document.querySelector('.search_button');
 let city = document.querySelector('.weather_city');
 let day = document.querySelector('.weather_day');
 let humidity = document.querySelector('.weather_indicator-humidity>.value');
-let wind = document.querySelector('.weather_indicator-wind>.value');
+let wind = document.querySelector('.weather_indicator-wind');
 let pressure = document.querySelector('.weather_indicator-pressure>.value');
 let image = document.querySelector('.weather_image');
 let temperature = document.querySelector('.weather_temperature>.value');
@@ -16,7 +16,7 @@ let suggestions = document.querySelector('#suggestions');
 let units = document.querySelector('#units');
 
 // private API key
-let privateAPIKey = ''; // use your own private API key  
+let privateAPIKey = ''; // use your own private API key 
 
 // API calls (create endpoints)
 let weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?units=metric&appid=' + privateAPIKey;
@@ -226,6 +226,38 @@ let updateCurrentWeather = (data) => {
     // need two parameters for the wind indicator (wind direction and its speed) 
     let windDirection; // wind direction  
     let deg = data.wind.deg; // degree
+    // call function to determine the wind direction 
+    windDirection = getWindDirection(deg); // refactor
+    // create a variable needed for imperial or metric use
+    let windSpeed;
+    let units;
+    // check if a zip-code is entered
+    if(isImperial) {
+        windSpeed = Math.round(data.wind.speed * 2.2369); // use imperial
+        units = 'mph'; 
+    } 
+    else {
+        windSpeed = Math.round(data.wind.speed); // use metric
+        units = 'm/s';
+    }
+    wind.textContent = windDirection + ', ' + windSpeed + ' ' + units; // wind direction and speed for the wind indicator
+    // store the temperature and a minus sign in front if it's a negative number (use Math.round to get an integer value)
+    temperature.textContent = data.main.temp > 0 ? Math.round(data.main.temp) : '-' + Math.round(data.main.temp);  
+    // get the image ID from the API data
+    let imgID = data.weather[0].id;
+    // check every object in the weatherImages array 
+    weatherImages.forEach(obj => {
+        // if the current object's ID matches the image ID that we get from the API
+        if(obj.ids.includes(imgID)) {
+            // use the corresponding image url to display the correct image icon  
+            image.src = obj.url; 
+        }
+    })
+}
+
+// a function to get the wind direction
+const getWindDirection = (deg) => {
+    let windDirection;
     // each direction is determined by a 90 degree rotation around a circle  
     if(deg > 45 && deg <= 135) {
         windDirection = 'East';
@@ -239,19 +271,7 @@ let updateCurrentWeather = (data) => {
     else {
         windDirection = 'North';
     }
-    wind.textContent = windDirection + ', ' + data.wind.speed; // wind direction and speed for the wind indicator
-    // store the temperature and a minus sign in front if it's a negative number (use Math.round to get an integer value)
-    temperature.textContent = data.main.temp > 0 ? Math.round(data.main.temp) : '-' + Math.round(data.main.temp);  
-    // get the image ID from the API data
-    let imgID = data.weather[0].id;
-    // check every object in the weatherImages array 
-    weatherImages.forEach(obj => {
-        // if the current object's ID matches the image ID that we get from the API
-        if(obj.ids.includes(imgID)) {
-            // use the corresponding image url to display the correct image icon  
-            image.src = obj.url; 
-        }
-    })
+    return windDirection;
 }
 
 // a function that updates the forecast
