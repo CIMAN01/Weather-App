@@ -9,9 +9,11 @@ If the user enters a zip code the weather, forecast, and wind-speed  will be sho
 
 The app also includes a city search suggestions mechanism when a query is performed.
 
+-------------------------------------------------------------------------------------------------------------------------------
+
 Below are screenshots of the app that shows what it looks like and how it functions: 
 
-![Screenshot-WeatherApp-1](https://user-images.githubusercontent.com/34729011/133704300-0a9ffed3-e03a-4f86-967d-f262eefdde94.png)
-![Screenshot-WeatherApp-2](https://user-images.githubusercontent.com/34729011/133704294-8350282f-5ce3-432b-8762-25992ce58ee6.png)
-![Screenshot-WeatherApp-3](https://user-images.githubusercontent.com/34729011/133704297-6e4e0524-cb81-4563-8e9b-d53b9d606695.png)
-![Screenshot-WeatherApp-4](https://user-images.githubusercontent.com/34729011/133704298-6add6714-ba81-421e-9300-5c50fb5e22b8.png)
+![Screenshot-WeatherApp-1](https://user-images.githubusercontent.com/34729011/133704521-7fd9c563-ebb2-4dc6-bcd6-586f31926240.png)
+![Screenshot-WeatherApp-2](https://user-images.githubusercontent.com/34729011/133704515-2a0288e5-928d-4d6f-8ecd-c18e2164a0c6.png)
+![Screenshot-WeatherApp-3](https://user-images.githubusercontent.com/34729011/133704516-eb8d8c95-5635-45ce-aa93-2e97683bc465.png)
+![Screenshot-WeatherApp-4](https://user-images.githubusercontent.com/34729011/133704520-bfbc7e82-8972-43d1-a948-13b6ceab464b.png)
