@@ -16,7 +16,7 @@ let suggestions = document.querySelector('#suggestions');
 let units = document.querySelector('#units');
 
 // private API key
-let privateAPIKey = ''; // use your own private API key 
+let privateAPIKey = ''; // use your own API key 
 
 // API calls (create endpoints)
 let weatherBaseEndpoint = 'https://api.openweathermap.org/data/2.5/weather?units=metric&appid=' + privateAPIKey;
@@ -64,7 +64,7 @@ let weatherImages = [
         ids: [511, 600, 601, 602, 611, 612, 613, 615, 616, 620, 621, 622] // weather condition codes
     },
     {
-        url: 'images/thnderstorm.png',
+        url: 'images/thunderstorm.png',
         ids: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232] // weather condition codes
     }
 ]
@@ -139,7 +139,7 @@ let getForecastByCityName = async (cityName) => {
     let forecast = await result.json(); // convert the results to a json object
     // store the json list that contains an array (40 element array)  
     let forecastList = forecast.list;
-    let daily = []; // create an empty array 
+    let fiveDayForecast = []; // create an empty array 
     // check every element in the array (40 items)
     forecastList.forEach(day => {
         // grab the date and time
@@ -147,10 +147,10 @@ let getForecastByCityName = async (cityName) => {
         let hours = date.getHours(); // get the time from the date 
         // if the time is 12:00, then the object has to be added to the daily array 
         if(hours === 12) { // needed in order to get only the 5 object and not 40!
-            daily.push(day); // add day to the array
+            fiveDayForecast.push(day); // add day to the array
         }
     })
-    return daily; // return the array
+    return fiveDayForecast; // return the array
 }
 
 // a function that returns weather data via another function that makes the initial API request
